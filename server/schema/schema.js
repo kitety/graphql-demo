@@ -13,8 +13,7 @@ const {
  * 书 作者 一个书一个作者(假设) 一个作者很多书
  * 查询一个作者的书
  * 查询一本书的作者
- */ 
-
+ */
 
 const books = [
   {
@@ -69,10 +68,10 @@ const BookType = new GraphQLObjectType({
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
     // 数据的关联
-    author:{
+    author: {
       type: AuthorType,
-      resolve(parent,args){
-      // parent对应查询到的对象
+      resolve(parent, args) {
+        // parent对应查询到的对象
         return _.find(authors, { id: parent.authorId });
       }
     }
@@ -84,9 +83,9 @@ const AuthorType = new GraphQLObjectType({
     id: { type: GraphQLID },
     age: { type: GraphQLInt },
     name: { type: GraphQLString },
-    books:{
+    books: {
       type: new GraphQLList(BookType),
-      resolve(parent,args){
+      resolve(parent, args) {
         return _.filter(books, { authorId: parent.id });
       }
     }
@@ -124,6 +123,19 @@ const RootQuery = new GraphQLObjectType({
         // 数据来源,从哪里得到数据:数据库或者其他来源
         // mongodb mysql postgresql
         return _.find(authors, { id: args.id });
+      }
+    },
+    books: {
+      type: new GraphQLList(BookType),
+      // 获取的时候,那个BookType里面的authors还可以拓展的
+      resolve(parent, args) {
+        return books;
+      }
+    },
+    authors: {
+      type: new GraphQLList(AuthorType),
+      resolve(parent, args) {
+        return authors;
       }
     }
   }
