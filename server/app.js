@@ -5,7 +5,13 @@ const schema = require("./schema/schema");
 
 const app = express();
 
-app.use("/graph", graphqlHTTP({ schema }));
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true
+  })
+);
 app.listen(4000, () => {
   console.log("The server is running on port:4000");
 });

@@ -22,23 +22,23 @@ const books = [
 // console.log(_.find(books, { id: '2' }));
 
 // book author
-const BookType = GraphQLObjectType({
+const BookType = new GraphQLObjectType({
   name: "Book",
-  filed: () => ({
+  fields: () => ({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
     genre: { type: GraphQLString }
   })
 });
-const AuthorType = GraphQLObjectType({
+const AuthorType = new GraphQLObjectType({
   name: "Author",
-  filed: () => ({
+  fields: () => ({
     name: { type: GraphQLString }
   })
 });
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
-  field: {
+  fields: {
     book: {
       type: BookType,
       // 参数
@@ -48,13 +48,20 @@ const RootQuery = new GraphQLObjectType({
         }
       },
       resolve(parent, args) {
+        console.log(args)
         // 数据来源,从哪里得到数据:数据库或者其他来源
         // mongodb mysql postgresql
-        _.find(books, { id: args.id });
+        return _.find(books, { id: args.id });
       }
     }
   }
 });
+
+// 查询方式 类似
+// {
+//   book(id:'2'){name}
+// }
+
 // 导出内容
 module.exports = new GraphQLSchema({
   query: RootQuery
