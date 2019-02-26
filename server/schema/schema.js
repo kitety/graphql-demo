@@ -25,31 +25,31 @@ const books = [
   {
     name: "深入react技术栈1",
     genre: "计算机1",
-    id: "11",
+    id: "2",
     authorId: "1"
   },
   {
     name: "自我",
     genre: "心理",
-    id: "2",
+    id: "3",
     authorId: "2"
   },
   {
     name: "自我1",
     genre: "心理1",
-    id: "12",
+    id: "4",
     authorId: "2"
   },
   {
     name: "CSS世界",
     genre: "计算机",
-    id: "3",
+    id: "5",
     authorId: "3"
   },
   {
     name: "CSS世界1",
     genre: "计算机1",
-    id: "13",
+    id: "6",
     authorId: "3"
   }
 ];
@@ -72,6 +72,7 @@ const BookType = new GraphQLObjectType({
       type: AuthorType,
       resolve(parent, args) {
         // parent对应查询到的对象
+        // console.log(parent);
         return _.find(authors, { id: parent.authorId });
       }
     }
@@ -118,10 +119,6 @@ const RootQuery = new GraphQLObjectType({
         }
       },
       resolve(parent, args) {
-        // 传递整型也会转换为string
-        console.log(args);
-        // 数据来源,从哪里得到数据:数据库或者其他来源
-        // mongodb mysql postgresql
         return _.find(authors, { id: args.id });
       }
     },
