@@ -1,5 +1,16 @@
 const graphql = require("graphql");
 const _ = require("lodash");
+const Book = require("../models/book");
+const Author = require("../models/author");
+
+// 使用方法
+// const book = new Book({
+//   name: "深入react技术栈",
+//   genre: "计算机",
+//   authorId: "1"
+// });
+// book.save();
+
 const {
   GraphQLObjectType,
   GraphQLString,
