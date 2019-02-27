@@ -84,7 +84,8 @@ const BookType = new GraphQLObjectType({
       resolve(parent, args) {
         // parent对应查询到的对象
         // console.log(parent);
-        return _.find(authors, { id: parent.authorId });
+        // return _.find(authors, { id: parent.authorId });
+        return Author.findById(parent.authorId);
       }
     }
   })
@@ -98,7 +99,8 @@ const AuthorType = new GraphQLObjectType({
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
-        return _.filter(books, { authorId: parent.id });
+        // return _.filter(books, { authorId: parent.id });
+        return Book.find({ authorId: parent.id });
       }
     }
   })
@@ -119,7 +121,8 @@ const RootQuery = new GraphQLObjectType({
         console.log(args);
         // 数据来源,从哪里得到数据:数据库或者其他来源
         // mongodb mysql postgresql
-        return _.find(books, { id: args.id });
+        // return _.find(books, { id: args.id });
+        return Book.findById(args.id);
       }
     },
     author: {
@@ -130,7 +133,8 @@ const RootQuery = new GraphQLObjectType({
         }
       },
       resolve(parent, args) {
-        return _.find(authors, { id: args.id });
+        // return _.find(authors, { id: args.id });
+        return Author.findById(args.id);
       }
     },
     books: {
@@ -138,12 +142,14 @@ const RootQuery = new GraphQLObjectType({
       // 获取的时候,那个BookType里面的authors还可以拓展的
       resolve(parent, args) {
         return books;
+        return Book.find({});
       }
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
-        return authors;
+        // return authors;
+        return Author.find({});
       }
     }
   }

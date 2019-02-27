@@ -1,0 +1,39 @@
+ {
+  book(id:"5c76937094c6310600ec3b2a"){
+    name,
+    genre,
+    id,
+    author{
+      name,
+      age,
+      id,
+      books{
+        name,
+        author{
+          name,
+          books{
+            name,
+            id,
+            author{
+              name
+            }
+          }
+        }
+      }
+    }
+  }
+  #  addBook(name:"明朝那些事儿",genre:"历史",authorId:"5c7692f194c6310600ec3b28"){
+  #   genre,name,id
+  # }
+  # addAuthor(name: "kk", age: 37) {
+  #   age,
+  #   name,
+  #   id
+  # }
+#   kk 5c7692f194c6310600ec3b28
+#   kitety 5c768f3ee0f9661b08b9248d
+  
+  # addBook(name:"js教程",genre:"计算机科学",authorId:"5c768f3ee0f9661b08b9248d"){
+  #   genre,name,id
+  # }
+}
