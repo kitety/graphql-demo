@@ -167,6 +167,23 @@ const Mutation = new GraphQLObjectType({
         });
         return author.save();
       }
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        authorId: { type: GraphQLString }
+        // 注意：在mongodb中，id是自动生成的
+      },
+      resolve(parent, args) {
+        let book = new Book({
+          name: args.name,
+          genre: args.genre,
+          authorId: args.authorId
+        });
+        return book.save();
+      }
     }
   }
 });
