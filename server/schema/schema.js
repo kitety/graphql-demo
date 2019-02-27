@@ -149,12 +149,41 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 
+// 修改的数据
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt }
+        // 注意：在mongodb中，id是自动生成的
+      },
+      resolve(parent, args) {
+        let author = new Author({
+          name: args.name,
+          age: args.age
+        });
+        return author.save();
+      }
+    }
+  }
+});
+
 // 查询方式 类似
 // {
 //   book(id:'2'){name}
 // }
+// mutation
+// mutation{
+//   addAuthor(name: "kitety", age: 7){
+//     age, name
+//   }
+// }
 
 // 导出内容
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
