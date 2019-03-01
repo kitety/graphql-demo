@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors')
 
 // 中间件
 const graphqlHTTP = require("express-graphql");
@@ -19,6 +20,8 @@ db.once("open", () => {
   console.log("database connected!");
 });
 
+// 跨域
+app.use(cors());
 app.use(
   "/graphql",
   graphqlHTTP({
