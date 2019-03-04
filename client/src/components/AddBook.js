@@ -1,10 +1,20 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
-import { getAuthorQuery } from "../queries/queries";
+import { graphql, compose } from "react-apollo";
+import {
+  getAuthorQuery,
+  addBookMutation,
+  getBookQuery
+} from "../queries/queries";
 
 class AddBook extends Component {
+  state = {
+    name: "",
+    genre: "",
+    authorId: ""
+  };
   displayAuthors = () => {
-    const data = this.props.data;
+    // const data = this.props.data; //无 compose key
+    const data = this.props.getAuthorQuery; // compose key
     if (data.loading) {
       return <option disabled>Loading Authors... </option>;
     } else {
@@ -17,28 +27,52 @@ class AddBook extends Component {
       });
     }
   };
+  submitForm = e => {
+    e.preventDefault();
+    this.props.addBookMutation({
+      variables: {
+        name: this.state.name,
+        genre: this.state.genre,
+        authorId: this.state.authorId
+      },
+      refetchQueries: [{ query: getBookQuery }]
+    });
+  };
   render() {
     console.log(this.props);
     return (
-      <form>
+      <form onSubmit={this.submitForm}>
         <div className="field">
           <label>Book Name:</label>
-          <input type="text" />
+          <input
+            type="text"
+            onChange={e => this.setState({ name: e.target.value })}
+          />
         </div>
         <div className="field">
           <label>Genre</label>
-          <input type="text" />
+          <input
+            type="text"
+            onChange={e => this.setState({ genre: e.target.value })}
+          />
         </div>
         <div className="field">
           <label>Author</label>
-          <select>
+          <select onChange={e => this.setState({ authorId: e.target.value })}>
             <option>Select Author</option>
             {this.displayAuthors()}
           </select>
+        </div>
+        <div>
+          <button>提交</button>
         </div>
       </form>
     );
   }
 }
 
-export default graphql(getAuthorQuery)(AddBook);
+export default compose(
+  // name 区别语句
+  graphql(getAuthorQuery, { name: "getAuthorQuery" }),
+  graphql(addBookMutation, { name: "addBookMutation" })
+)(AddBook);
