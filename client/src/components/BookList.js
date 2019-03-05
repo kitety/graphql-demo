@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
-import { getBookQuery} from '../queries/queries'
+import { getBooksQuery } from "../queries/queries";
+import BookDetails from "./BookDetails";
 
 class BookList extends Component {
+  state = {
+    bookId: null
+  };
   displayBooks = () => {
     const data = this.props.data;
     if (data.loading) {
@@ -11,7 +15,14 @@ class BookList extends Component {
       return (
         <ul id="book-list">
           {data.books.map(book => {
-            return <li key={book.id}>{book.name}</li>;
+            return (
+              <li
+                key={book.id}
+                onClick={e => this.setState({ bookId: book.id })}
+              >
+                {book.name}
+              </li>
+            );
           })}
         </ul>
       );
@@ -22,9 +33,11 @@ class BookList extends Component {
     return (
       <div>
         {this.displayBooks()}
+        <BookDetails bookId={this.state.bookId} />
+        <br />
       </div>
     );
   }
 }
 
-export default graphql(getBookQuery)(BookList);
+export default graphql(getBooksQuery)(BookList);

@@ -142,7 +142,6 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       // 获取的时候,那个BookType里面的authors还可以拓展的
       resolve(parent, args) {
-        return books;
         return Book.find({});
       }
     },
